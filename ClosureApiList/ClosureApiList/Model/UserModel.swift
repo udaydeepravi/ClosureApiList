@@ -7,19 +7,19 @@
 
 import Foundation
 struct UserModel: Codable {
-    let results: [Result]
+    let results: [Results]
 }
 
-struct Result: Codable, Identifiable {
+struct Results: Codable, Identifiable {
     var id: String {
-        return name!.first
+        return name.first
     }
     let gender: String
-    let name: Name?
+    let name: Name
     let email: String
-    let login: Login?
+    let login: Login
     let phone, cell: String
-    let picture: Picture?
+    let picture: Picture
 }
 
 struct Login: Codable {

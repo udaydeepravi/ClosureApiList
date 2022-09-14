@@ -9,12 +9,11 @@ import Foundation
 import SwiftUI
 
 struct ImageView: View {
-    var user: Result
-    init(user: Result) {
-        self.user = user
-    }
+    
+    var user: Results
+    
     var body: some View {
-        AsyncImage(url: URL(string: "\(user.picture!.thumbnail)")) { image in
+        AsyncImage(url: URL(string: "\(user.picture.thumbnail)")) { image in
             image.resizable()
         } placeholder: {
             ProgressView()

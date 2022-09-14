@@ -8,38 +8,40 @@
 import SwiftUI
 
 struct ListView: View {
-    @StateObject var viewModel:ListViewModel = ListViewModel()
+    
+    @StateObject var viewModel: ListViewModel = ListViewModel()
+
     var body: some View {
         NavigationView {
-            NameListLoop
-            .navigationTitle("Random Users")
-        }
-    }
-    private var NameListLoop: some View {
-        List {
-            ForEach(viewModel.jsonResults) { data in
-                HStack {
-                    ImageView(user: data)
-                    Text("\(data.name!.first)")
-                        .font(.system(size: 20))
-                    Text("\(data.name!.last)")
-                        .font(.system(size: 20))
-                    NavigationLink(destination: DetailView(user: data)) {
-                        
+            Group {
+                if viewModel.result.isEmpty {
+                    VStack(spacing: 8) {
+                        ProgressView()
+                        Text("Fetching Users")
                     }
+                } else {
+                    List {
+                        ForEach(viewModel.result) { data in
+                            NavigationLink(destination: DetailView(user: data)) {
+                                CellView(userdata: data)
+                            }
+                        }
+                    }
+                    .navigationTitle("Random Users")
                 }
             }
-        }.onAppear {
-            Task {
-                 viewModel.fetchData()
+            .onAppear {
+                viewModel.fetchData()
+            }
+            .alert(isPresented: $viewModel.hasError) {
+                Alert(title: Text(String("Try again later due to \(viewModel.errorMessage!)")))
             }
         }
     }
 }
 
-struct ListView_Previews: PreviewProvider {
+struct UserListView_Previews: PreviewProvider {
     static var previews: some View {
         ListView()
-            
     }
 }

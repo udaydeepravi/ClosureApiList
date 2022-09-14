@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct DetailView: View {
-    var user: Result
-    init(user: Result) {
-        self.user = user
-    }
+    
+    var user: Results
+
     var body: some View {
         NavigationView {
             List {
@@ -21,13 +20,14 @@ struct DetailView: View {
                         .font(.system(size: 20))
                     Text("Email: \(user.email)")
                         .font(.system(size: 20))
+                        .multilineTextAlignment(.leading)
                 }
-            }.navigationBarTitle(Text(user.name!.first + user.name!.last), displayMode: .large)
+            }.navigationBarTitle(Text(user.name.first + user.name.last), displayMode: .large)
         }
     }
     
     private var ImageLoop: some View {
-        AsyncImage(url: URL(string: "\(user.picture!.large)")) { image in
+        AsyncImage(url: URL(string: "\(user.picture.large)")) { image in
             image.resizable()
         } placeholder: {
             ProgressView()
@@ -36,8 +36,8 @@ struct DetailView: View {
     }
     private var FullName: some View {
         HStack(spacing: 5) {
-            Text("\(user.name!.first)")
-            Text("\(user.name!.last)")
+            Text("\(user.name.first)")
+            Text("\(user.name.last)")
         }
     }
 }
