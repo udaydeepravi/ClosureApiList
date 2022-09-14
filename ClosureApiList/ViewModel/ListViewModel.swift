@@ -8,15 +8,25 @@
 import Foundation
 
 class ListViewModel: ObservableObject {
-    @Published var jsonResults = [Result]()
-    var someApi = JsonAPI()
+
+    @Published var errorMessage: String? = nil
+    @Published var result = [Results]()
+    @Published var hasError = false
+    var someApi = NetWorking()
+    
     func fetchData() {
+        hasError = false
         someApi.getUserData { data in
             DispatchQueue.main.async {
-                self.jsonResults = data.results
+                switch data {
+                case .failure(let error):
+                    self.hasError = true
+                    self.errorMessage = error.description
+                    print(error)
+                case .success(let users):
+                    self.result = users.results
+                }
             }
-            print(data)
-            return
         }
     }
 }
