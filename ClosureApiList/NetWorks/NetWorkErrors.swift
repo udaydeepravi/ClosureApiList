@@ -18,7 +18,7 @@ enum NetWorkErrors: Error, CustomStringConvertible {
         //info for debugging
         switch self {
         case .unknown: return "unknown error"
-        case .badURL: return "invalid URL"
+        case .badURL: return "Invalid URL"
         case .url(let error):
             return error?.localizedDescription ?? "url session error"
         case .parsing(let error):

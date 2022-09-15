@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListView: View {
     
-    @StateObject var viewModel: ListViewModel = ListViewModel()
+    @StateObject var viewModel: ListViewModel = ListViewModel(errorMessage: "")
 
     var body: some View {
         NavigationView {
@@ -34,7 +34,7 @@ struct ListView: View {
                 viewModel.fetchData()
             }
             .alert(isPresented: $viewModel.hasError) {
-                Alert(title: Text(String("Try again later due to \(viewModel.errorMessage!)")))
+                Alert(title: Text(String("Try again later due to \(viewModel.errorMessage)")))
             }
         }
     }

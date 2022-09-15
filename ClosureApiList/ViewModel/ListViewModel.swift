@@ -9,7 +9,12 @@ import Foundation
 
 class ListViewModel: ObservableObject {
 
-    @Published var errorMessage: String? = nil
+    @Published var errorMessage: String
+    
+    init(errorMessage: String) {
+        self.errorMessage = errorMessage
+    }
+    
     @Published var result = [Results]()
     @Published var hasError = false
     var someApi = NetWorking()
