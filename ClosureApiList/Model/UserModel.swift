@@ -11,26 +11,59 @@ struct UserModel: Codable {
 }
 
 struct Results: Codable, Identifiable {
+    
     var id: String {
         return name.first
     }
+    
     let gender: String
     let name: Name
     let email: String
-    let login: Login
+    let dob, registered: DateTime?
     let phone, cell: String
     let picture: Picture
-}
-
-struct Login: Codable {
-    let uuid, username, password, salt: String
-    let md5, sha1, sha256: String
 }
 
 struct Name: Codable {
     let title, first, last: String
 }
 
+struct DateTime: Codable {
+    let date: String?
+}
+
 struct Picture: Codable {
     let large, medium, thumbnail: String
+}
+
+extension Results {
+    
+    var dateOfBirth: Date? {
+        get {
+            return DateUtils.parse(self.dob?.date)
+        }
+    }
+    
+    var registeredTime: Date? {
+        get {
+            return DateUtils.parse(self.registered?.date)
+        }
+    }
+    
+    var fullName: String {
+        get {
+            return "\(self.name.first) \(self.name.last)".trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+    
+    var genderEmoji: String? {
+        if gender == "Male" || gender == "male" {
+            return "♂️"
+        } else if gender == "Female" || gender == "female" {
+            return "♀️"
+        } else {
+            return nil
+        }
+    }
+    
 }

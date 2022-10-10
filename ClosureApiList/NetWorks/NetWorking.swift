@@ -7,7 +7,11 @@
 
 import Foundation
 
-class NetWorking {
+protocol ListRepositary {
+    func getUserData(completion: @escaping(Result<UserModel, NetWorkErrors>) -> Void)
+}
+
+class NetWorking: ListRepositary {
     func getUserData(completion: @escaping(Result<UserModel, NetWorkErrors>) -> Void) {
         guard let url = URL(string: "https://randomuser.me/api/?results=50") else {
             let error = NetWorkErrors.badURL
@@ -24,10 +28,10 @@ class NetWorking {
             guard response != nil else {
                 return
             }
-            guard let safeData = data else {
-                return
-            }
             do {
+                guard let safeData = data else {
+                    return
+                }
                 let decodedData = try decodingData(data: safeData)
                 completion(.success(decodedData))
             } catch {
