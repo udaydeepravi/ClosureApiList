@@ -13,6 +13,7 @@ struct ImageView: View {
     var user: UserEntitys
     
     var body: some View {
+        
         AsyncImage(url: URL(string: user.picture ?? "")) { image in
                 image.resizable()
             } placeholder: {

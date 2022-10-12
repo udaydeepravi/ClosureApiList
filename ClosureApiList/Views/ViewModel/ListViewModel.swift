@@ -12,18 +12,16 @@ import SwiftUI
 class ListViewModel: ObservableObject {
     
     @Published var errorMessage: String
+    @Published var core = UserEntitys()
+    @Published var hasError = false
+    var someApi = NetWorking()
     
     init(errorMessage: String) {
         self.errorMessage = errorMessage
     }
     
-    @Published var result = [Results]()
-    @Published var core = UserEntitys()
-    @Published var hasError = false
-    var someApi = NetWorking()
-    
     func CoreDate(context: NSManagedObjectContext, results: [Results]) {
-        
+        //Manages a collection of model objects
         results.forEach { user in
             let entity = UserEntitys(context: context)
             entity.gender = user.gender
@@ -38,6 +36,7 @@ class ListViewModel: ObservableObject {
     }
     
     func fetchData(context: NSManagedObjectContext) {
+        //Fetching Data from API
         hasError = false
         someApi.getUserData { data in
             DispatchQueue.main.async { [self] in
@@ -47,8 +46,6 @@ class ListViewModel: ObservableObject {
                     self.errorMessage = error.description
                     print(error)
                 case .success(let users):
-//                    self.result = users.results
-//                    print(result)
                     self.CoreDate(context: context, results: users.results)
                 }
             }
@@ -60,8 +57,8 @@ class ListViewModel: ObservableObject {
 extension ListViewModel {
     
     func SaveDate(context: NSManagedObjectContext) {
+        // Save the data in Database
         do {
-            // Save the data in Database
             try context.save()
             print("Data Saved in CoreStack")
         }

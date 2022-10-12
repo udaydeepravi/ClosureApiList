@@ -25,7 +25,6 @@ struct DetailView: View {
                             Text("Back")
                         })
                     }
-                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink {
                             UpdateView(user: user)
@@ -38,42 +37,30 @@ struct DetailView: View {
         }
         .padding()
         .navigationBarHidden(true)
-        //        .navigationBarTitle(Text(user.fullName), displayMode: .large)
+    }
+    
+    private var headerFullName : some View {
+        HStack {
+            Text(user.first ?? " ")
+                .font(.largeTitle)
+                .padding(.vertical, 15)
+            Text(user.last ?? " ")
+                .font(.largeTitle)
+                .padding(.vertical, 15)
+        }
     }
     
     func content() -> some View {
-        //        return
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                
-                Text(user.first ?? " ")
-                    .font(.largeTitle)
-                    .padding(.vertical, 15)
-                AsyncImage(url: URL(string: user.picture ?? "" )) { image in
-                    image.resizable()
-                } placeholder: {
-                    ZStack {
-                        ProgressView()
-                        Image(systemName: "person.crop.square")
-                        .resizable()
-                        .frame(width: 350, height: 300)
-                    }
-
-                }
-                .scaledToFill()
-                .cornerRadius(20)
-                .shadow(radius: 5)
-                
+                headerFullName
+                PictureView(user: user)
                 UserInfoItemView(label: "First name", value: user.first)
                 Divider()
                 UserInfoItemView(label: "Last name", value: user.last)
-                    .lineLimit(nil)
                 Divider()
-                
-                if user.dateOfBirth != nil {
-                    UserInfoItemView(label: "Date of birth", value: DateUtils.formatDob(user.dateOfBirth!))
-                    Divider()
-                }
+                UserInfoItemView(label: "Date of birth", value: DateUtils.formatDob(user.dateOfBirth ?? Date()))
+                Divider()
                 UserInfoItemView(label: "Phone", value: user.phone)
                 UserInfoItemView(label: "Email", value: user.email)
             }
@@ -81,3 +68,4 @@ struct DetailView: View {
         }
     }
 }
+

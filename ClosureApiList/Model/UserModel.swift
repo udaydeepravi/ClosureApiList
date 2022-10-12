@@ -65,5 +65,4 @@ extension Results {
             return nil
         }
     }
-    
 }

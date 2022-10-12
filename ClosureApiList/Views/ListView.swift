@@ -23,15 +23,15 @@ struct ListView: View {
         NavigationView {
             Group {
                 List {
-                    CoreListLoop
+                    listView
                 }
                 .navigationTitle("Random Users")
             }
             .onAppear {
                 if !hasAppeared {
                     viewModel.fetchData(context: context)
+                    hasAppeared = true
                 }
-                hasAppeared = true
             }
             .alert(isPresented: $viewModel.hasError) {
                 Alert(title: Text(String("Try again later due to \(viewModel.errorMessage)")))
@@ -39,7 +39,7 @@ struct ListView: View {
         }
     }
     
-    private var CoreListLoop: some View {
+    private var listView: some View {
         ForEach(items, id: \.self) { data in
             NavigationLink(destination: DetailView(user: data)) {
                 CellView(userdata: data)
@@ -50,18 +50,10 @@ struct ListView: View {
     
     private func deleteItems(offsets: IndexSet) {
         offsets.map { items[$0] }.forEach(context.delete)
-        
         do {
             try context.save()
         } catch {
-            // Error handling
+            print(error.localizedDescription)
         }
     }
-    
 }
-
-//struct UserListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ListView()
-//    }
-//}
