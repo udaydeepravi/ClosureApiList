@@ -13,7 +13,7 @@ protocol ListRepositary {
 
 class NetWorking: ListRepositary {
     func getUserData(completion: @escaping(Result<UserModel, NetWorkErrors>) -> Void) {
-        guard let url = URL(string: "https://randomuser.me/api/?results=50") else {
+        guard let url = URL(string: "https://randomuser.me/api/?results=10") else {
             let error = NetWorkErrors.badURL
             completion(Result.failure(error))
             return

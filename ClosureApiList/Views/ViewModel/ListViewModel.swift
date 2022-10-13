@@ -14,13 +14,14 @@ class ListViewModel: ObservableObject {
     @Published var errorMessage: String
     @Published var core = UserEntitys()
     @Published var hasError = false
+    @Published var savedData: Bool = false
     var someApi = NetWorking()
     
     init(errorMessage: String) {
         self.errorMessage = errorMessage
     }
     
-    func CoreDate(context: NSManagedObjectContext, results: [Results]) {
+    func coreDate(context: NSManagedObjectContext, results: [Results]) {
         //Manages a collection of model objects
         results.forEach { user in
             let entity = UserEntitys(context: context)
@@ -32,7 +33,7 @@ class ListViewModel: ObservableObject {
             entity.last = user.name.last
             entity.phone = user.phone
         }
-        SaveDate(context: context)
+            SaveDate(context: context)
     }
     
     func fetchData(context: NSManagedObjectContext) {
@@ -46,7 +47,7 @@ class ListViewModel: ObservableObject {
                     self.errorMessage = error.description
                     print(error)
                 case .success(let users):
-                    self.CoreDate(context: context, results: users.results)
+                    self.coreDate(context: context, results: users.results)
                 }
             }
         }
@@ -59,8 +60,13 @@ extension ListViewModel {
     func SaveDate(context: NSManagedObjectContext) {
         // Save the data in Database
         do {
-            try context.save()
-            print("Data Saved in CoreStack")
+            if !savedData {
+                print("Data Alread Exists")
+            } else {
+                savedData = true
+                print("Data Saved in CoreStack")
+                try context.save()
+            }
         }
         catch {
             let nserror = error as NSError

@@ -77,11 +77,11 @@ struct UpdateView: View {
     }
     
     func saveData() {
-        let userInfo = UserEntitys(context: context)
-        userInfo.first = self.firstName
-        userInfo.last = self.lastName
-        userInfo.email = self.email
-        userInfo.phone = self.phoneNumber
+        let userInfo = user
+        userInfo.first = firstName
+        userInfo.last = lastName
+        userInfo.email = email
+        userInfo.phone = phoneNumber
         do {
             try self.context.save()
         } catch {
