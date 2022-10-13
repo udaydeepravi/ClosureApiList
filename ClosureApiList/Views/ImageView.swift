@@ -23,6 +23,7 @@ struct ImageView: View {
                         .renderingMode(.template)
                         .frame(width: 96, height: 96)
                         .cornerRadius(20)
+                        .opacity(0.3)
                         .foregroundColor(Color("CustomGray"))
                     ProgressView()
                 }

@@ -65,4 +65,8 @@ extension Results {
             return nil
         }
     }
+    
+    var avatarUrl: URL? {
+        URL(string: picture.large)
+    }
 }

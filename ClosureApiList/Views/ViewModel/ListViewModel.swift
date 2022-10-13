@@ -62,10 +62,10 @@ extension ListViewModel {
         do {
             if !savedData {
                 print("Data Alread Exists")
-            } else {
                 savedData = true
-                print("Data Saved in CoreStack")
+            } else {
                 try context.save()
+                print("Data from API Stored")
             }
         }
         catch {
