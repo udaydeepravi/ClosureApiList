@@ -11,17 +11,17 @@ import SwiftUI
 
 class ListViewModel: ObservableObject {
     
-    @Published var errorMessage: String
+    @Published var errorMessage: String = ""
     @Published var core = UserEntitys()
     @Published var hasError = false
     @Published var savedData: Bool = false
-    var someApi = NetWorking()
+    var someApi: NetWorking
     
-    init(errorMessage: String) {
-        self.errorMessage = errorMessage
+    init(someApi: NetWorking) {
+        self.someApi = someApi
     }
     
-    func coreDate(context: NSManagedObjectContext, results: [Results]) {
+    func userFetch(context: NSManagedObjectContext, results: [Results]) {
         //Manages a collection of model objects
         results.forEach { user in
             let entity = UserEntitys(context: context)
@@ -47,7 +47,7 @@ class ListViewModel: ObservableObject {
                     self.errorMessage = error.description
                     print(error)
                 case .success(let users):
-                    self.coreDate(context: context, results: users.results)
+                    self.userFetch(context: context, results: users.results)
                 }
             }
         }
@@ -60,13 +60,7 @@ extension ListViewModel {
     func SaveDate(context: NSManagedObjectContext) {
         // Save the data in Database
         do {
-            if !savedData {
-                print("Data Alread Exists")
-                savedData = true
-            } else {
-                try context.save()
-                print("Data from API Stored")
-            }
+            try context.save()
         }
         catch {
             let nserror = error as NSError

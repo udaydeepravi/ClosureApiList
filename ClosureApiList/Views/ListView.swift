@@ -10,9 +10,9 @@ import CoreData
 
 struct ListView: View {
     
-    @State var hasAppeared: Bool = false
-    @State var apiAppeared: Bool = false
-    @StateObject var viewModel: ListViewModel = ListViewModel(errorMessage: "")
+    @AppStorage("isAppeared") private var isAppeared: Bool = false
+    @AppStorage("refreshCount") private var refreshCount: Int = 0
+    @StateObject var viewModel: ListViewModel = ListViewModel(someApi: NetWorking())
     @Environment(\.managedObjectContext) var context
     
     @FetchRequest(entity: UserEntitys.entity(),
@@ -28,9 +28,15 @@ struct ListView: View {
                 .navigationTitle("Random Users")
             }
             .onAppear {
-                if !hasAppeared {
+                if !isAppeared {
                     viewModel.fetchData(context: context)
-                    hasAppeared = true
+                    print("Data from Api")
+                    isAppeared = true
+                } else {
+                    viewModel.SaveDate(context: context)
+                    refreshCount += 1
+                    print("Re-launch Count \(refreshCount)")
+                    print("Data from Core")
                 }
             }
             .alert(isPresented: $viewModel.hasError) {
